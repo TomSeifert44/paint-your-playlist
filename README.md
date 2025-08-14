@@ -1,4 +1,4 @@
-# paint-your-playlist
+# Paint Your Playlist
 Create personalized, AI-generated playlist cover images with Spotify API
 
 [Web Application Link](https://playlist-cover-image-gen.uw.r.appspot.com/)
