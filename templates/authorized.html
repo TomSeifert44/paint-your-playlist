@@ -1,0 +1,219 @@
+{% extends "layout.html" %} <!-- uses layout file -->
+
+{% block body %}
+
+
+<!-- 
+
+css elements recommended by AI to use for my UI (Chat-GPT 30 May 2025)
+directed to MDN web docs (MDN web docs 30 May 2025)
+
+-->
+
+<!-- css styles for list of playlists -->
+<style>
+
+  /* 
+
+  define style for class .playlist-list, styling all ul elements with class="playlist-list"
+
+  - remove bullet point
+  - no border
+  - flex box functionality
+  - set gap between columns
+
+  */
+
+  ul.playlist-list {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: flex-start;
+  }
+
+  /* 
+
+  define style for class .playlist-list descendant li, styling all li elements within ul elements with class="playlist-list"
+
+  - set margins
+  - set width
+  - set flex box to constant initial width of 1/3 of the window minus the margins
+  - border taken into account for box width
+
+  */
+
+  ul.playlist-list li {
+    margin-bottom: 15px;
+    width: 150px;
+    flex: 0 0 calc(33.333% - 13.34px);
+  	box-sizing: border-box;
+  }
+
+  /* 
+
+  define style for class .playlist-list descendant input when type="radio", styling all such input elements within ul elements with class="playlist-list"
+
+  - remove display of input
+
+  */
+
+  ul.playlist-list input[type="radio"] {
+    display: none;
+  }
+
+  /* 
+
+  define style for class .playlist-list descendant label, styling all such label elements within ul elements with class="playlist-list"
+
+  - display as block
+  - set border
+  - set box padding
+  - sets mouse to grab icon on the box
+  - align text in center
+  - animate border color and shadow
+
+  */
+
+  ul.playlist-list label {
+    display: block;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: grab;
+    text-align: center;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  /* 
+
+  define style for class .playlist-list label descendant img, styling all such img elements within label elements under ul elements with class="playlist-list"
+
+  - set dimensions
+  - retain aspect ratio
+  - set border, display as block, set margins
+
+  */
+
+  ul.playlist-list label img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 6px;
+    display: block;
+    margin: 0 auto 8px;
+  }
+
+  /* 
+
+  define style for class .playlist-list label descendant div.playlist-name, styling all such div elements with class="playlist_name" within label elements under ul elements with class="playlist-list"
+
+  - set font size, thickness, and color
+
+  */
+
+
+  ul.playlist-list label div.playlist-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+  }
+
+  /* 
+
+  define style for label under class .playlist-list descendant input when type="radio" and input is checked, styling all such label elements  associated with input elements under ul elements with class="playlist-list" that are selected
+
+  - set color, border color, and shadow
+
+  */
+
+
+  ul.playlist-list input[type="radio"]:checked + label {
+    border-color: #17a74a;
+    box-shadow: 0 0 8px rgba(23, 167, 74, 0.6);
+    background-color: #7cf2a6;
+  }
+
+  .hidden-item {
+    display: none;
+  }
+
+
+</style>
+
+<!-- use Jinja and css styling above to create  -->
+<body>
+<h2>Step 1: Select a playlist</h2>
+<p>Your playlist's data will be fed into an image generation model that will summarize the playlist's songs in an image</p>
+
+<form id="generateForm" action="/image_gen" onsubmit="showLoading()" method="GET">
+  <div class="playlist-container">
+    <ul class="playlist-list" style="list-style-type:none; padding:0;">
+      {% for playlist in playlists_info["items"] %}
+        <!--if playlist["owner"]["display_name"] == user_id-->
+        {% if playlist["owner"]["external_urls"]["spotify"] == 'https://open.spotify.com/user/' ~ user_id %}
+          <!-- hide elements not in the first 9 entries of laylists_info["items"] using custom .hidden-item class -->
+          <li class="playlist-item {% if loop.index > 11 %}hidden-item{% endif %}">
+            <input type="radio" id="playlist-{{ playlist['id'] }}" name="selected_playlist_id" value="{{ playlist['id'] }}">
+            <label for="playlist-{{ playlist['id'] }}">
+              {% if playlist['images'] %}
+                <img src="{{ playlist['images'][0]['url'] }}" alt="Album Art" style="width:60px; height:60px;">
+              {% else %}
+                <img src="/static/default.png" alt="No Album Art" style="width:60px; height:60px;">
+              {% endif %}
+              {{ playlist["name"] }}
+            </label>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+
+    <!-- create button to reveal hidden playlists -->
+    <button id="seeMoreBtn" type="button" style="display: block; margin: 0px auto;">See More</button>
+
+  </div>
+
+  <h2>Step 2: Customize your style</h2>
+  <p>Input custom attribites to tailor your image</p>
+
+  <label>Aesthetic</label>
+  <input type="text" id="image_aesthetic" name="aesthetic"><br>
+  <label>Style</label>
+  <input type="text" id="image_style" name="style"><br>
+  <label>Color Palette</label>
+  <input type="text" id="image_color" name="color_palette"><br>
+  <label>Lighting</label>
+  <input type="text" id="image_lighting" name="lighting"><br>
+  <label>Mood</label>
+  <input type="text" id="image_mood" name="mood"><br>
+  <label>Composition</label>
+  <input type="text" id="image_comp" name="composition"><br>
+
+
+  <button type="submit" style="display: block; margin: 0px auto; margin-top: 20px; padding: 10px 20px; font-size: 16px;">Generate Playlist Cover Art</button>
+</form>
+
+<!-- create loading message with no original display -->
+<div id="loadingMessage" style="display:none;">
+  <p>Loading... Please wait.</p>
+</div>
+
+<!-- 
+
+show loading text instead of form from above (Chat-GPT 30 May 2025) 
+directed to MDN web docs (MDN web docs 30 May 2025)
+
+-->
+<script>
+  function showLoading() {
+    document.getElementById('generateForm').style.display = 'none';
+    document.getElementById('loadingMessage').style.display = 'block';
+  }
+</script>
+
+</body>
+
+{% endblock %}
+
+

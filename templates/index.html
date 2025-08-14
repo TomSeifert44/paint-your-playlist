@@ -1,0 +1,12 @@
+{% extends "layout.html" %} <!-- uses layout file -->
+
+{% block body %}
+
+  <p>
+  	Connect to your Spotify account, select a playlist, and watch AI create a cover image for your playlist!
+  </p>
+  <form method="GET" action="/login"> <!-- create log in button, sends user to login route -->
+    <button type="submit">Login</button>
+  </form>
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "layout.html" %} <!-- uses layout file -->
+
+{% block body %}
+
+<body>
+
+{% if image_url %}
+
+  <h2>Cover Image for [INSERT PLAYLIST NAME]</h2>
+
+  <!-- show output file (img docs 30 May 2025) -->
+  <a href="/output" dowload>
+    <img src="/output" alt={{prompt}} style="padding-bottom: 30px;" width="400">
+  </a>
+{% else %}
+
+  <p>Image generation is not currently available. Here's a prompt for your to pass into an AI image generator <a href="https://gemini.google.com/app">here</a>!</p>
+
+<br>
+
+<blockquote style="text-align: center; font-style: italic; margin: 2em auto; max-width: 600px;">
+  {{prompt}}
+</blockquote>
+
+{% endif %}
+
+<!-- create button to upload image to spotify (Spotify docs 2 June 2025) -->
+<form action="/final_results" method="POST">
+  <button type="submit" name="upload" value="true">Upload to Spotify</button>
+</form>
+
+<!-- display success/error message for upload if fed into template -->
+{% if message %}
+  <p style="color: green; text-align: center; margin-top: 15px;">{{ message }}</p>
+{% endif %}
+
+</body>
+
+{% endblock %}

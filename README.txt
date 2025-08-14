@@ -1,0 +1,3 @@
+My project creates AI-generated playlist cover images for Spotify users base don their Spotify playlists. The dependencies are shown in requirements, but i am hosting in GCP so that is doen automatically. To run the project just visit https://playlist-cover-image-gen.uw.r.appspot.com, login to spotify, and select an album to geenrate an image for!
+
+The output will be an image that you can upload to Spotify to have it replace your current playlist cover image. These images can take upo to 2 or 3 minutes to generate and are not always very realistic and they have a pre-defined style, but there is randomness involved so that a playlist will not always produce the same cover. 

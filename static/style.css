@@ -1,0 +1,99 @@
+/* css styling for preset elements and custom classes (MDN docs 30 May 2025) */
+body {
+  background-color: #fff;
+  color: #000;
+  font-family: Arial, Helvetica, sans-serif;
+  height: 100vh;
+  margin: 0;
+  font-weight: 700;
+  display: flex;
+  justify-content: top;
+  align-items: center;
+  flex-direction: column;
+}
+
+
+header.gradient-text {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-top: 30px;
+  padding-bottom: 20px;
+
+  /* Create the gradient background */
+  background: linear-gradient(45deg, #E01FDD, #553BF9, #1BD9F6);
+  
+  /* Clip the background to the text shape */
+  -webkit-background-clip: text;
+  background-clip: text;
+  
+  /* Make the text color transparent to show the background */
+  color: transparent;
+
+  font-family: "Poppins", sans-serif;
+  font-weight: 619;
+  font-style: italic;
+
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-top: 200px;
+  text-align: center;
+}
+
+
+h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-top: 20px;
+  text-align: center;
+}
+
+p {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+button {
+  background-color: #1DB954; /* Spotify green */
+  color: white;
+  padding: 6px 18px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 30px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #17a74a;
+}
+
+footer {
+	margin-bottom: 20px;
+}
+
+input[type="radio"]:checked + img {
+  border: 3px solid #007bff;
+
+input[type="radio"]:checked + img + div {
+  color: #007bff;
+  font-weight: 700;
+}
+
+.hidden-item {
+  display: none;
+}
+
+.playlist-container {
+  max-width: 70%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+#top-left-logo {
+  position: absolute;
+  top: 50;
+  left: 44;
+  padding: 100px; 
+}

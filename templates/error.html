@@ -1,0 +1,11 @@
+{% extends "layout.html" %} <!-- uses layout file -->
+
+{% block body %}
+
+<p>Login error<p>
+
+<form method="GET" action="/login"> <!-- create log in button, sends user to login route -->
+    <button type="submit">Try again</button>
+ </form>
+
+{% endblock %}
